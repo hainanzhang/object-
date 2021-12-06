@@ -1,62 +1,95 @@
-import Vue from 'vue'
-import store from '@js/store'
-import Router from 'vue-router'
-const originalPush = Router.prototype.push
-Router.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
-import layout from '@com/layout'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
-const imp = ((path,url) =>{
-    if(url){
-        return () =>import('@com/'+path)
-    }else{
-        return () =>import('@pon/'+path)
-    }
-})
-
-Vue.use(Router)
-
-const routes = [
-    {path: '/login',name: '登录',component: imp('login',1),meta:{r: true}},
+const router = createRouter({
+  history: createWebHashHistory(), // hash模式：createWebHashHistory，history模式：createWebHistory
+  routes: [
     {
-        component: layout,
-        path: '/home',
-        children: [
-            {path: '/home',name: '首页',component: imp('home',1)},
-            {path: '/table/table1',name: '表格1',component: imp('table/table1')},
-            {path: '/table/table2',name: '表格2',component: imp('table/table2')},
-            {path: '/form/form1',name: '表单1',component: imp('form/form1')},
-            {path: '/form/form2',name: '表单2',component: imp('form/form2')},
-            {path: '/grop/grop1',name: '表组1',component: imp('grop/grop1')},
-            {path: '/grop/grop2',name: '表组2',component: imp('grop/grop2')}
-        ]
+      path: '/',
+      redirect: '/introduce'
     },
-    
-
-    {path: '*/', redirect: '/home'}
-
-]
-
-const router = new Router({
-    routes,
-    linkActiveClass: 'active',
-    linkExactActiveClass: 'active'
-})
-
-router.beforeEach((to, from, next) => {
-    if(!to.meta.r){
-        if(store.getters.getInfo){
-            next();
-        }else{
-            next({path: '/login'})
+    {
+      path: '/introduce',
+      name: 'introduce',
+      component: () => import(/* webpackChunkName: "introduce" */ '../views/Introduce.vue')
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import(/* webpackChunkName: "dashboard" */ '../views/Index.vue')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import(/* webpackChunkName: "login" */ '../views/Login.vue')
+    },
+    {
+      path: '/add',
+      name: 'add',
+      component: () => import(/* webpackChunkName: "add" */ '../views/AddGood.vue')
+    },
+    {
+      path: '/swiper',
+      name: 'swiper',
+      component: () => import(/* webpackChunkName: "swiper" */ '../views/Swiper.vue')
+    },
+    {
+      path: '/hot',
+      name: 'hot',
+      component: () => import(/* webpackChunkName: "hot" */ '../views/IndexConfig.vue')
+    },
+    {
+      path: '/new',
+      name: 'new',
+      component: () => import(/* webpackChunkName: "new" */ '../views/IndexConfig.vue')
+    },
+    {
+      path: '/recommend',
+      name: 'recommend',
+      component: () => import(/* webpackChunkName: "recommend" */ '../views/IndexConfig.vue')
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: () => import(/* webpackChunkName: "category" */ '../views/Category.vue'),
+      children: [
+        {
+          path: '/category/level2',
+          name: 'level2',
+          component: () => import(/* webpackChunkName: "level2" */ '../views/Category.vue'),
+        },
+        {
+          path: '/category/level3',
+          name: 'level3',
+          component: () => import(/* webpackChunkName: "level3" */ '../views/Category.vue'),
         }
-    }else{
-        next();
+      ]
+    },
+    {
+      path: '/good',
+      name: 'good',
+      component: () => import(/* webpackChunkName: "new" */ '../views/Good.vue')
+    },
+    {
+      path: '/guest',
+      name: 'guest',
+      component: () => import(/* webpackChunkName: "guest" */ '../views/Guest.vue')
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: () => import(/* webpackChunkName: "order" */ '../views/Order.vue')
+    },
+    {
+      path: '/order_detail',
+      name: 'order_detail',
+      component: () => import(/* webpackChunkName: "order_detail" */ '../views/OrderDetail.vue')
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: () => import(/* webpackChunkName: "account" */ '../views/Account.vue')
     }
-    if(to.name){
-        document.title = to.name + '-' + '后台管理系统'
-    }
+  ]
 })
 
 export default router
