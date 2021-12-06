@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import ElementPlus from 'element-plus';//为vue3项目特别更新的版本
 import { ElButton, ElContainer, ElAside, ElHeader, ElMain, ElFooter, ElMenu, ElSubmenu, ElMenuItemGroup, ElMenuItem, ElForm, ElFormItem, ElInput, ElPopover, ElTag, ElCard, ElTable, ElTableColumn, ElPagination, ElDialog, ElPopconfirm, ElUpload, ElLoading, ElSelect, ElOption, ElRadioGroup, ElRadio, ElCascader, ElCheckbox, ElInputNumber } from 'element-plus'
 import * as Sentry from "@sentry/browser";
 import { Integrations } from "@sentry/tracing";
@@ -50,8 +51,9 @@ app.config.globalProperties.$filters = {
   }  
 }
 
+console.log( 'ElementPlus',ElementPlus  )
 app.use(router)
-
+// app.use(ElementPlus)
 app.use(ElButton)
     .use(ElContainer)
     .use(ElAside)
